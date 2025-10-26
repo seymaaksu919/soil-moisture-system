@@ -1,67 +1,64 @@
-# 🌱 Toprak Nem Sensörü Web Uygulaması
+# 🌱 Toprak Nem Sensörü Web Uygulaması  
 
-Bu proje, **IoT + Web + Basit Makine Öğrenimi** kombinasyonu ile geliştirilmiş bir **Toprak Nem Takip Sistemi**dir. Hackathon sürecinde, toprak sensöründen veri alıp web üzerinden görüntüleme ve basit tahmin yapma amaçlı tasarlanmıştır.  
-
-Sensör verisi toplanır, CSV dosyasında saklanır, Linear Regression ile basit bir tahmin yapılır ve tahmine dayalı sulama önerisi web arayüzünde gösterilir. Ayrıca gerçek zamanlı veri izleme için ayrı bir endpoint ve JavaScript tabanlı dashboard vardır.
-
----
-
-## 🎯 Proje Amacı
-- Tarımda toprak nemi takibi ve sulama önerisi sağlamak  
-- Gerçek zamanlı nem verisini web arayüzü üzerinden izlemek  
-- Basit makine öğrenimi ile tahmin yapmak ve öneri üretmek  
-- Hackathon kapsamında IoT, Web ve Python entegrasyonunu göstermek  
-
----
-🌐 API Endpointleri
-
-/soil (POST) → Sensörden gelen nem verisini alır. JSON: { "moisture": 450 }
-
-/moisture (GET) → Son ölçülen nem değerini JSON olarak döndürür
-
-/ (GET) → Web arayüzü, tahmin ve öneri ile birlikte son nem değerini gösterir.
+Bu proje, **Halkbank & Habitat Derneği Hackathonu** kapsamında geliştirilen bir **IoT + Web + Basit Makine Öğrenimi tabanlı Toprak Nem Takip Sistemi**dir.  
+Amaç; sensör verilerini toplayarak web arayüzü üzerinden gerçek zamanlı izleme ve basit bir tahmine dayalı sulama önerisi sunmaktır.  
 
 ---
 
-🧠 Kullanılan Teknolojiler
-
-Python → Backend ve veri işleme
-
-Flask → Web framework
-
-Pandas & NumPy → CSV okuma ve veri işlemleri
-
-Scikit-Learn → Linear Regression tahmini
-
-HTML, CSS, JavaScript → Web arayüzü ve canlı veri güncelleme
+## 🎯 Proje Amacı  
+- Tarımda **toprak nemi takibini** kolaylaştırmak  
+- **Gerçek zamanlı sensör verilerini** web üzerinden görüntülemek  
+- **Makine öğrenimi (Linear Regression)** ile basit sulama önerileri üretmek  
+- IoT, Web ve Python teknolojilerinin **entegrasyonunu** göstermek  
 
 ---
 
-🔧 Uygulama Mantığı
-
-Sensör /soil endpoint’ine POST ile nem değerini gönderir
-
-soil_data.csv dosyasında tüm nem değerleri saklanır
-
-CSV verileri okunur, Linear Regression ile bir sonraki değer tahmini yapılır
-
-Tahmine göre sulama önerisi üretilir:
-
-< 300 → Toprak çok kuru, sulama yapın
-
-300–700 → Nem ideal
-
-700 → Toprak fazla nemli, sulamadan kaçının
-
-HTML sayfası Flask tarafından render edilir, JS ile /moisture endpoint’i düzenli aralıklarla çekilir ve anlık değer güncellenir
+## ⚙️ Uygulama Mantığı  
+1. Sensör `/soil` endpoint’ine POST yöntemiyle nem verisi gönderir.  
+   Örnek JSON:  
+   ```json
+   { "moisture": 450 }
+   ```
+2. Veriler `soil_data.csv` dosyasında saklanır.  
+3. CSV dosyasındaki veriler **Pandas & Scikit-Learn** kullanılarak işlenir.  
+4. **Linear Regression** modeliyle bir sonraki nem değeri tahmin edilir.  
+5. Tahmine göre sistem şu önerileri üretir:  
+   - `< 300` → 🌵 Toprak çok kuru → **Sulama yapılmalı**  
+   - `300–700` → 🌱 Nem ideal  
+   - `> 700` → 💧 Toprak fazla nemli → **Sulamadan kaçının**  
+6. Flask üzerinden HTML sayfası render edilir.  
+   - `/` → Ana sayfa (tahmin + öneri)  
+   - `/moisture` → Son nem değeri (JSON)  
+   - `/soil` → Sensör verisi alımı (POST)  
+7. JavaScript, `/moisture` endpoint’inden düzenli aralıklarla veri çekerek sayfadaki değeri **canlı olarak günceller.**
 
 ---
 
-💡 Notlar
+## 🧠 Kullanılan Teknolojiler  
+| Katman | Teknoloji |
+|--------|------------|
+| Backend | Python, Flask |
+| Veri İşleme | Pandas, NumPy |
+| Makine Öğrenimi | Scikit-Learn (Linear Regression) |
+| Frontend | HTML, CSS, JavaScript |
+| Veri Saklama | CSV (soil_data.csv) |
 
-Linear Regression modeli gösterim amaçlıdır; hassas tarım uygulamalarında gerçek sensör verileri ve gelişmiş ML modelleri gerekir
+---
 
-CSS ve JS dosyaları ayrı tutuldu, sayfa temiz ve yönetilebilir
+## 🌐 API Endpointleri  
+| Endpoint | Yöntem | Açıklama |
+|-----------|--------|----------|
+| `/soil` | POST | Sensörden gelen nem verisini alır |
+| `/moisture` | GET | Son ölçülen nem değerini döndürür |
+| `/` | GET | Web arayüzünü ve tahmin sonuçlarını gösterir |
 
-soil_data.csv proje klasöründe oluşturulur; veri yoksa kullanıcı uyarılır
+---
+
+## 💡 Notlar  
+- Linear Regression modeli yalnızca **gösterim amaçlıdır**.  
+  Gerçek uygulamalarda daha fazla sensör verisi ve gelişmiş ML modelleri kullanılmalıdır.  
+- Frontend tarafında **HTML, CSS ve JS** dosyaları ayrı tutulmuştur.  
+  Bu sayede arayüz düzenli, temiz ve geliştirilebilir yapıdadır.  
+
+---
 
